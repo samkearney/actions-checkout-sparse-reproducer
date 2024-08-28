@@ -1,0 +1,19 @@
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - run: |
+          apt-get update
+          apt-get install -y git tree
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: subdir/subdir
+          sparse-checkout-cone-mode: true
+      - run: |
+          echo "Sparse checkout: $(git config --get core.sparseCheckout)"
+          echo "Cone mode: $(git config --get core.sparseCheckoutConeMode)"
+          tree
